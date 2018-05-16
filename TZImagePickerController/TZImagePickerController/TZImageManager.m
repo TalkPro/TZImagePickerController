@@ -384,7 +384,7 @@ static dispatch_once_t onceToken;
                 // if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive) type = TZAssetModelMediaTypeLivePhoto;
             }
             // Gif
-            if ([[phAsset valueForKey:@"filename"] hasSuffix:@"GIF"]) {
+            if ([[[phAsset valueForKey:@"filename"] uppercaseString] hasSuffix:@"GIF"]) {
                 type = TZAssetModelMediaTypePhotoGif;
             }
         }
