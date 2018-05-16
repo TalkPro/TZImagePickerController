@@ -396,6 +396,42 @@ static dispatch_once_t onceToken;
     return type;
 }
 
+-(PHAsset *)getLatestImageAsset{
+    PHFetchOptions *fetchOptions = [PHFetchOptions new];
+    fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    PHFetchResult *recentAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    __block PHAssetCollection *recentAssetCol;
+    [recentAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if([obj assetCollectionSubtype] == PHAssetCollectionSubtypeSmartAlbumRecentlyAdded){
+            recentAssetCol = obj;
+            *stop = YES;
+        }
+    }];
+    if (recentAssetCol) {
+        PHAsset *asset = [PHAsset fetchAssetsInAssetCollection:recentAssetCol options:fetchOptions].firstObject;
+        return asset;
+    }
+    return nil;
+}
+
+-(PHAsset *)getLatestVideoAsset{
+    PHFetchOptions *fetchOptions = [PHFetchOptions new];
+    fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    PHFetchResult *recentAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumVideos options:nil];
+    __block PHAssetCollection *recentAssetCol;
+    [recentAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if([obj assetCollectionSubtype] == PHAssetCollectionSubtypeSmartAlbumVideos){
+            recentAssetCol = obj;
+            *stop = YES;
+        }
+    }];
+    if (recentAssetCol) {
+        PHAsset *asset = [PHAsset fetchAssetsInAssetCollection:recentAssetCol options:fetchOptions].firstObject;
+        return asset;
+    }
+    return nil;
+}
+
 - (NSString *)getNewTimeFromDurationSecond:(NSInteger)duration {
     NSString *newTime;
     if (duration < 10) {

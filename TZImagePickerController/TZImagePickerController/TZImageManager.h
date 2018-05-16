@@ -112,6 +112,10 @@
 /// 获取asset的资源类型
 - (TZAssetModelMediaType)getAssetType:(id)asset;
 
+- (PHAsset*)getLatestImageAsset;
+
+- (PHAsset *)getLatestVideoAsset;
+
 @end
 
 //@interface TZSortDescriptor : NSSortDescriptor
